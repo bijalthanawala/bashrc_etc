@@ -1,0 +1,32 @@
+#! /bin/bash
+
+this_script_fullname="${BASH_SOURCE[0]}"
+this_script_basename=$(basename ${this_script_fullname})
+script_alias=$(echo ${this_script_basename} | tr -d .)
+echo "Running ${this_script_fullname}"
+
+echo "Setting up alias ${script_alias}"
+alias ${script_alias}="vim ${this_script_fullname}; source ${this_script_fullname}"
+
+# improve ls
+alias ll='ls -l'
+export TIME_STYLE=long-iso
+
+# improve bash history
+HISTCONTROL=ignorespace
+HISTFILESIZE=-1
+HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
+
+# set noclobber
+set -o noclobber
+
+# Warn if sudo insults are enabled
+insults=$(grep "Defaults insults" /etc/sudoers 2>/dev/null)
+if [ -n "${insults}" ] ; then
+    echo "WARNING: sudo insults are ON"
+fi
+
+# Warn if .vimrc is missing 
+if [ ! -e "${HOME}/.vimrc" ] ; then
+   echo "WARNING: No .vimrc settings"
+fi
