@@ -20,6 +20,9 @@ HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
 # set noclobber
 set -o noclobber
 
+#improve git
+alias gitgr="git log --color --graph --branches --all --decorate=short --oneline"
+
 # Warn if sudo insults are enabled
 insults=$(grep "Defaults insults" /etc/sudoers 2>/dev/null)
 if [ -n "${insults}" ] ; then
