@@ -23,6 +23,26 @@ set -o noclobber
 #improve git
 alias gitgr="git log --color --graph --branches --all --decorate=short --oneline"
 
+#Make bash prompt git-friendly
+function git_branch_prompt() {
+    gb=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    if [ -n "${gb}" ] ; then
+        echo "[git:${gb}]$"
+    else
+        echo ""
+    fi
+}
+
+ps1_has_git_prompt=$(echo ${PS1} | grep -o git_branch_prompt)
+if [ -z "${ps1_has_git_prompt}" ] ; then
+    echo Making bash prompt git-branch-friendly
+    COLOR_LIGHTRED="\e[0;31m\]"
+    COLOR_STOP="\e[m"
+    export PS1="${PS1}${COLOR_LIGHTRED}\$(git_branch_prompt)${COLOR_STOP}"
+else
+    echo bash prompt is already git-branch-friendly
+fi
+
 # Warn if sudo insults are enabled
 insults=$(grep "Defaults insults" /etc/sudoers 2>/dev/null)
 if [ -n "${insults}" ] ; then
