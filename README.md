@@ -4,11 +4,13 @@
 
 
 #### Tips:
-vimrc can be activated with following example command
+vimrc can be activated with the following series of commands:
+
 ```
-#EXAMPLE Command:
 cd ~
 ln -s ${HOME}/bashrc_etc/vimrc .vimrc
-# Replace the location of vimrc above with where the file
-# resides on your system
 ```
+**
+Replace the location of vimrc in the `ln` command above with
+where the file actually resides on your system
+**
