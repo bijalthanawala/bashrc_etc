@@ -36,8 +36,8 @@ function git_branch_prompt() {
 ps1_has_git_prompt=$(echo ${PS1} | grep -o git_branch_prompt)
 if [ -z "${ps1_has_git_prompt}" ] ; then
     echo Making bash prompt git-branch-friendly
-    COLOR_LIGHTRED="\e[0;31m\]"
-    COLOR_STOP="\e[m"
+    COLOR_LIGHTRED="\[\e[0;31m\]"
+    COLOR_STOP="\[\e[m\]"
     export PS1="${PS1}${COLOR_LIGHTRED}\$(git_branch_prompt)${COLOR_STOP}"
 else
     echo bash prompt is already git-branch-friendly
