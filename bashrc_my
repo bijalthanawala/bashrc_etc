@@ -8,6 +8,12 @@ echo "Running ${this_script_fullname}"
 echo "Setting up alias ${script_alias}"
 alias ${script_alias}="vim ${this_script_fullname}; source ${this_script_fullname}"
 
+# improve less
+alias less='less --quit-if-one-screen --ignore-case --LONG-PROMPT --LINE-NUMBERS --no-init'
+
+# improve man
+export MANPAGER='less --ignore-case --no-init'
+
 # improve ls
 alias ll='ls -l'
 export TIME_STYLE=long-iso
