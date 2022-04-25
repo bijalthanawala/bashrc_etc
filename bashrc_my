@@ -62,6 +62,12 @@ if [ ! -e "${HOME}/.vimrc" ] ; then
    echo "WARNING: No .vimrc settings"
 fi
 
+echo "Current Shell Options:"
+echo "${SHELLOPTS}"
+
+echo "Current Bash Options:"
+echo "${BASHOPTS}"
+
 #This script is sourced so, unset temporary variables
 #TODO: OR perhaps if we put all the work above in a function
 # then that would save us from explicit unset-s
