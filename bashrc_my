@@ -28,6 +28,7 @@ set -o noclobber
 
 #improve git
 alias gitgr="git log --color --graph --branches --all --decorate=short --oneline"
+export GIT_EDITOR=vim
 
 #Make bash prompt git-friendly
 function git_branch_prompt() {
