@@ -75,4 +75,6 @@ unset this_script_fullname
 unset this_script_basename
 unset script_alias
 unset ps1_has_git_prompt
+unset COLOR_LIGHTRED
+unset COLOR_STOP
 unset insults
