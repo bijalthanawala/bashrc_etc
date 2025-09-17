@@ -1,5 +1,7 @@
 #! /bin/bash
 
+is_verbose=false
+
 #######################################################
 # Functions available to be called from command-line
 #######################################################
@@ -23,62 +25,109 @@ function get_current_git_branch() {
 # Helper functions for this script
 #######################################################
 
-function initialize() {
+function check_if_verbose_requested() {
+    local arg1="$1"
+    local arg1_lower_case=""
 
+    if [ -n "${arg1}" ] ; then
+        arg1_lower_case="${arg1,,}"
+    fi
+
+    if [ "$arg1_lower_case" == "--verbose" ] || [ "$arg1_lower_case" == "-v" ] ; then
+        is_verbose=true
+    fi
+}
+
+
+function initialize() {
     local this_script_fullname="${BASH_SOURCE[0]}"
     local this_script_basename=$(basename ${this_script_fullname})
     local script_alias=$(echo ${this_script_basename} | tr -d .)
-    echo "Running ${this_script_fullname}"
+
+    echo "[+] Running ${this_script_fullname}"
 
     # Meta
-    echo "Setting up alias ${script_alias}"
+    if [ "$is_verbose" == "true" ] ; then
+        echo "[+] Declaring alias: ${script_alias}"
+    fi
+
     alias ${script_alias}="vim ${this_script_fullname}; source ${this_script_fullname}"
 
 }
 
 
 function declare_alias_less() {
+    if [ "$is_verbose" == "true" ] ; then
+        echo [+] Declaring alias: less
+    fi
+
     alias less='less --quit-if-one-screen --ignore-case --LONG-PROMPT --LINE-NUMBERS --no-init'
 }
 
 
 function declare_git_friendly_PS1() {
     local ps1_has_git_prompt=$(echo ${PS1} | grep -o get_current_git_branch)
+
+    if [ "$is_verbose" == "true" ] ; then
+        if [ -z "${ps1_has_git_prompt}" ] ; then
+            echo [+] Declaring git-friendly bash prompt declared
+        else
+            echo [-] Bash prompt is already git-friendly
+        fi
+    fi
+
     if [ -z "${ps1_has_git_prompt}" ] ; then
-        echo Making bash prompt git-branch-friendly
         local COLOR_LIGHTRED="\[\e[0;31m\]"
         local COLOR_STOP="\[\e[m\]"
         export PS1="${PS1}${COLOR_LIGHTRED}\$(get_current_git_branch)${COLOR_STOP} "
-    else
-        echo bash prompt is already git-branch-friendly
     fi
 }
 
 
 function customize_git() {
+    if [ "$is_verbose" == "true" ] ; then
+        echo [+] Customizing git
+    fi
+
     export GIT_EDITOR=vim
     alias gitgr="git log --color --graph --branches --all --decorate=short --oneline"
 }
 
 
 function customize_man() {
+    if [ "$is_verbose" == "true" ] ; then
+        echo [+] Customizing man
+    fi
+
     export MANPAGER='less --ignore-case --no-init'
 }
 
 
 function customize_ls() {
+    if [ "$is_verbose" == "true" ] ; then
+        echo [+] Customizing ls
+    fi
+
     export TIME_STYLE=long-iso
     alias ll='ls -l'
 }
 
 
 function customize_bash() {
+    if [ "$is_verbose" == "true" ] ; then
+        echo [+] Customizing bash
+    fi
+
     set -o noclobber
     shopt -s histverify
 }
 
 
 function customize_bash_history() {
+    if [ "$is_verbose" == "true" ] ; then
+        echo [+] Customizing bash history
+    fi
+
     export HISTCONTROL=ignorespace
     export HISTSIZE=-1
     export HISTFILESIZE=-1
@@ -86,22 +135,18 @@ function customize_bash_history() {
 }
 
 
-function verbose_if_requested() {
-    local arg1=$1
-    local arg1_lower_case=${arg1,,};
+function other_verbose_processing() {
+    if [ "$is_verbose" == "true" ] ; then
 
-    if [ $arg1_lower_case == "--verbose" ] || [ $arg1_lower_case == "-v" ] ; then
         # Warn if .vimrc is missing 
-        if [ ! -e "${HOME}/.vimrc" ] ; then
-            echo "WARNING: No .vimrc settings"
+        if [ -n "$(which vim)" ] && [ ! -e "${HOME}/.vimrc" ] ; then
+            echo "[INFO] ~/.vimrc missing!"
         fi
 
-        echo ""
-        echo "Current Shell Options:"
+        echo -n "[INFO] Current Shell Options: "
         echo "${SHELLOPTS//:/,}"
 
-        echo ""
-        echo "Current Bash Options:"
+        echo -n "[INFO] Current Bash Options: "
         echo "${BASHOPTS//:/, }"
     fi
 }
@@ -110,6 +155,7 @@ function verbose_if_requested() {
 #######################################################
 # Script begins here
 #######################################################
+check_if_verbose_requested $1;
 initialize;
 declare_alias_less;
 declare_git_friendly_PS1;
@@ -118,7 +164,7 @@ customize_man;
 customize_ls;
 customize_bash;
 customize_bash_history;
-verbose_if_requested $1;
+other_verbose_processing;
 
 #TODO: If shell level (SHLVL) > 1 then inform (mention in the prompt, or one time at the start)
 
@@ -126,6 +172,8 @@ verbose_if_requested $1;
 #######################################################
 # Unset helper functions
 #######################################################
+unset check_if_verbose_requested;
+unset initialize
 unset declare_alias_less;
 unset declare_git_friendly_PS1;
 unset customize_git;
@@ -133,4 +181,9 @@ unset customize_man;
 unset customize_ls;
 unset customize_bash;
 unset customize_bash_history;
-unset verbose_if_requested;
+unset other_verbose_processing;
+
+#######################################################
+# Unset global variables
+#######################################################
+unset is_verbose;
