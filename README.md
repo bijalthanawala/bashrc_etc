@@ -4,7 +4,7 @@
 ## One way to use the _.bashrc_ configuration in this repo is to follow these steps:
 - Make a safe copy of your existing _~/.bashrc_ file
 - Clone this repo
-- Open your existing _~/.bashrc_ file in an editor and add this line at the end: ``` source ~/bashrc_etc/bashrc_my ```
+- Open your existing _~/.bashrc_ file in an editor and add this line at the end: ```source ~/bashrc_etc/bashrc_my``` or ```source ~/bashrc_etc/bashrc_my --verbose```
 - The above line assumes that this repo was cloned in your home directory. Adjust the path in the above line if it was cloned eleswhere.
 
 
