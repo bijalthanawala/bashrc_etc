@@ -33,7 +33,7 @@ export GIT_EDITOR=vim
 
 #Make bash prompt git-friendly
 function git_branch_prompt() {
-    gb=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    gb=$(git branch --show-current 2>/dev/null)	
     if [ -n "${gb}" ] ; then
         echo "[git:${gb}]$"
     else
