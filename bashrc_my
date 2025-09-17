@@ -28,6 +28,11 @@ shopt -s histverify
 # set noclobber
 set -o noclobber
 
+# improve diff
+function diffy() {
+    diff -y -W $(tput cols) "$1" "$2" | less
+}
+
 #improve git
 alias gitgr="git log --color --graph --branches --all --decorate=short --oneline"
 export GIT_EDITOR=vim
