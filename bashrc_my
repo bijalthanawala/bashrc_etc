@@ -1,80 +1,134 @@
 #! /bin/bash
 
-this_script_fullname="${BASH_SOURCE[0]}"
-this_script_basename=$(basename ${this_script_fullname})
-script_alias=$(echo ${this_script_basename} | tr -d .)
-echo "Running ${this_script_fullname}"
+#######################################################
+# Functions available to be called from command-line
+#######################################################
 
-echo "Setting up alias ${script_alias}"
-alias ${script_alias}="vim ${this_script_fullname}; source ${this_script_fullname}"
-
-# improve less
-alias less='less --quit-if-one-screen --ignore-case --LONG-PROMPT --LINE-NUMBERS --no-init'
-
-# improve man
-export MANPAGER='less --ignore-case --no-init'
-
-# improve ls
-alias ll='ls -l'
-export TIME_STYLE=long-iso
-
-# improve bash history
-export HISTCONTROL=ignorespace
-export HISTSIZE=-1
-export HISTFILESIZE=-1
-export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
-shopt -s histverify
-
-# set noclobber
-set -o noclobber
-
-# improve diff
 function diffy() {
     diff -y -W $(tput cols) "$1" "$2" | less
 }
 
-#improve git
-alias gitgr="git log --color --graph --branches --all --decorate=short --oneline"
-export GIT_EDITOR=vim
 
-#Make bash prompt git-friendly
-function git_branch_prompt() {
-    gb=$(git branch --show-current 2>/dev/null)	
-    if [ -n "${gb}" ] ; then
-        echo "[git:${gb}]$"
+function get_current_git_branch() {
+    local curr_git_branch=$(git branch --show-current 2>/dev/null)	
+    if [ -n "${curr_git_branch}" ] ; then
+        echo "[git:${curr_git_branch}]$"
     else
         echo ""
     fi
 }
 
-ps1_has_git_prompt=$(echo ${PS1} | grep -o git_branch_prompt)
-if [ -z "${ps1_has_git_prompt}" ] ; then
-    echo Making bash prompt git-branch-friendly
-    COLOR_LIGHTRED="\[\e[0;31m\]"
-    COLOR_STOP="\[\e[m\]"
-    export PS1="${PS1}${COLOR_LIGHTRED}\$(git_branch_prompt)${COLOR_STOP} "
-else
-    echo bash prompt is already git-branch-friendly
-fi
 
-# Warn if .vimrc is missing 
-if [ ! -e "${HOME}/.vimrc" ] ; then
-   echo "WARNING: No .vimrc settings"
-fi
+#######################################################
+# Helper functions for this script
+#######################################################
 
-echo "Current Shell Options:"
-echo "${SHELLOPTS}"
+function initialize() {
 
-echo "Current Bash Options:"
-echo "${BASHOPTS}"
+    local this_script_fullname="${BASH_SOURCE[0]}"
+    local this_script_basename=$(basename ${this_script_fullname})
+    local script_alias=$(echo ${this_script_basename} | tr -d .)
+    echo "Running ${this_script_fullname}"
 
-#This script is sourced so, unset temporary variables
-#TODO: OR perhaps if we put all the work above in a function
-# then that would save us from explicit unset-s
-unset this_script_fullname
-unset this_script_basename
-unset script_alias
-unset ps1_has_git_prompt
-unset COLOR_LIGHTRED
-unset COLOR_STOP
-unset insults
+    # Meta
+    echo "Setting up alias ${script_alias}"
+    alias ${script_alias}="vim ${this_script_fullname}; source ${this_script_fullname}"
+
+}
+
+
+function declare_alias_less() {
+    alias less='less --quit-if-one-screen --ignore-case --LONG-PROMPT --LINE-NUMBERS --no-init'
+}
+
+
+function declare_git_friendly_PS1() {
+    local ps1_has_git_prompt=$(echo ${PS1} | grep -o get_current_git_branch)
+    if [ -z "${ps1_has_git_prompt}" ] ; then
+        echo Making bash prompt git-branch-friendly
+        local COLOR_LIGHTRED="\[\e[0;31m\]"
+        local COLOR_STOP="\[\e[m\]"
+        export PS1="${PS1}${COLOR_LIGHTRED}\$(get_current_git_branch)${COLOR_STOP} "
+    else
+        echo bash prompt is already git-branch-friendly
+    fi
+}
+
+
+function customize_git() {
+    export GIT_EDITOR=vim
+    alias gitgr="git log --color --graph --branches --all --decorate=short --oneline"
+}
+
+
+function customize_man() {
+    export MANPAGER='less --ignore-case --no-init'
+}
+
+
+function customize_ls() {
+    export TIME_STYLE=long-iso
+    alias ll='ls -l'
+}
+
+
+function customize_bash() {
+    set -o noclobber
+    shopt -s histverify
+}
+
+
+function customize_bash_history() {
+    export HISTCONTROL=ignorespace
+    export HISTSIZE=-1
+    export HISTFILESIZE=-1
+    export HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
+}
+
+
+function verbose_if_requested() {
+    local arg1=$1
+    local arg1_lower_case=${arg1,,};
+
+    if [ $arg1_lower_case == "--verbose" ] || [ $arg1_lower_case == "-v" ] ; then
+        # Warn if .vimrc is missing 
+        if [ ! -e "${HOME}/.vimrc" ] ; then
+            echo "WARNING: No .vimrc settings"
+        fi
+
+        echo "Current Shell Options:"
+        echo "${SHELLOPTS}"
+
+        echo "Current Bash Options:"
+        echo "${BASHOPTS}"
+    fi
+}
+
+
+#######################################################
+# Script begins here
+#######################################################
+initialize;
+declare_alias_less;
+declare_git_friendly_PS1;
+customize_git;
+customize_man;
+customize_ls;
+customize_bash;
+customize_bash_history;
+verbose_if_requested $1;
+
+#TODO: If shell level (SHLVL) > 1 then inform (mention in the prompt, or one time at the start)
+
+
+#######################################################
+# Unset helper functions
+#######################################################
+unset declare_alias_less;
+unset declare_git_friendly_PS1;
+unset customize_git;
+unset customize_man;
+unset customize_ls;
+unset customize_bash;
+unset customize_bash_history;
+unset verbose_if_requested;
