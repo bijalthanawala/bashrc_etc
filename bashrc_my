@@ -51,7 +51,7 @@ function initialize() {
         echo "[+] Declaring alias: ${script_alias}"
     fi
 
-    alias ${script_alias}="vim ${this_script_fullname}; source ${this_script_fullname}"
+    alias ${script_alias}="vim ${this_script_fullname}; source ${this_script_fullname} --verbose"
 
 }
 
