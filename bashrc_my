@@ -96,11 +96,13 @@ function verbose_if_requested() {
             echo "WARNING: No .vimrc settings"
         fi
 
+        echo ""
         echo "Current Shell Options:"
-        echo "${SHELLOPTS}"
+        echo "${SHELLOPTS//:/,}"
 
+        echo ""
         echo "Current Bash Options:"
-        echo "${BASHOPTS}"
+        echo "${BASHOPTS//:/, }"
     fi
 }
 
