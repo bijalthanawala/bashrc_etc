@@ -51,12 +51,6 @@ else
     echo bash prompt is already git-branch-friendly
 fi
 
-# Warn if sudo insults are enabled
-insults=$(grep "Defaults insults" /etc/sudoers 2>/dev/null)
-if [ -n "${insults}" ] ; then
-    echo "WARNING: sudo insults are ON"
-fi
-
 # Warn if .vimrc is missing 
 if [ ! -e "${HOME}/.vimrc" ] ; then
    echo "WARNING: No .vimrc settings"
