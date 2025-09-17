@@ -20,6 +20,7 @@ export TIME_STYLE=long-iso
 
 # improve bash history
 HISTCONTROL=ignorespace
+HISTSIZE=-1
 HISTFILESIZE=-1
 HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
 shopt -s histverify
