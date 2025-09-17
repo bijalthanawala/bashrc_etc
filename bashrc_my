@@ -19,10 +19,10 @@ alias ll='ls -l'
 export TIME_STYLE=long-iso
 
 # improve bash history
-HISTCONTROL=ignorespace
-HISTSIZE=-1
-HISTFILESIZE=-1
-HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
+export HISTCONTROL=ignorespace
+export HISTSIZE=-1
+export HISTFILESIZE=-1
+exort HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
 shopt -s histverify
 
 # set noclobber
