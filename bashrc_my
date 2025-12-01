@@ -20,6 +20,51 @@ function get_current_git_branch() {
     fi
 }
 
+function mkdircd() {
+    # Create a new directory and cd to it instantly
+    # Also saves the current directory before changing
+    # to the new directory so that the original can be
+    # returned to with a 'popd' command
+    if [ "$1" == "-v" -o "$1" == "--verbose" ]; then
+        verbose=true
+        new_dir="$2"
+    else
+        verbose=false
+        new_dir="$1"
+    fi
+
+    if [ -z "${new_dir}" ]; then
+        echo "Specify a new directory to create and change to."
+        return
+    fi
+
+    # Perform non-verbose
+    echo "1=[$1]" "verbose=[$verbose]"
+    if [ ${verbose} == false ] ; then
+        mkdir -p "${new_dir}" > /dev/null && pushd . > /dev/null && cd "${new_dir}"
+        return
+    fi
+
+    # Perform verbose
+    if [ -d "${new_dir}" ] ; then
+        echo "This directory already exists: ${new_dir}"
+    else
+        mkdir --parents ${new_dir}
+    fi
+
+    result=$?
+    if [ $result -ne 0 ] ; then
+        echo "Failed to create new directory: ${new_dir}"
+        return
+    fi
+
+    pushd . > /dev/null
+
+    echo "Changing to ${new_dir}"
+    echo "Type popd to return back to $(pwd)"
+    cd ${new_dir}
+
+}
 
 #######################################################
 # Helper functions for this script
