@@ -18,7 +18,7 @@ source ~/bashrc_etc/bashrc
 ```sh
 source ~/bashrc_etc/bashrc --verbose
 ```
-<sup>*</sup>Note that there is __<ins>no</ins> dot . prefix__ in this filename
+<sup>*</sup>Note that there is __<ins>no</ins> dot . prefix__ in this filename  
 <sup>**</sup>Adjust the path in these lines to point to the directory where your **_bashrc_** actually is
 
 ---
@@ -34,7 +34,7 @@ source ~/bashrc_etc/bashrc --verbose
 ```sh
 ln -s ~/bashrc_etc/vimrc ~/.vimrc
 ```
-<sup>$</sup>Note that there is __<ins>no</ins> dot . prefix__ in this filename
+<sup>$</sup>Note that there is __<ins>no</ins> dot . prefix__ in this filename  
 <sup>$$</sup>Adjust the path in these lines to point to the directory where your *__vimrc__* actually is
 
 ---
