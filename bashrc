@@ -12,7 +12,7 @@ function diffy() {
 
 
 function get_current_git_branch() {
-    local curr_git_branch=$(git branch --show-current 2>/dev/null)	
+    local curr_git_branch=$(git branch --show-current 2>/dev/null)
     if [ -n "${curr_git_branch}" ] ; then
         echo "[git:${curr_git_branch}]$"
     else
@@ -183,7 +183,7 @@ function customize_bash_history() {
 function other_verbose_processing() {
     if [ "$is_verbose" == "true" ] ; then
 
-        # Warn if .vimrc is missing 
+        # Warn if .vimrc is missing
         if [ -n "$(which vim)" ] && [ ! -e "${HOME}/.vimrc" ] ; then
             echo "[INFO] ~/.vimrc missing!"
         fi

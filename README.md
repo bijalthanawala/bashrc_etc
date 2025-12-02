@@ -1,17 +1,43 @@
 
-# This repo is a bunch of useful config files
+# Custom bash and vim settings
 
-## One way to use the _.bashrc_ configuration in this repo is to follow these steps:
+### One proposed way to use bash configuration in the __bashrc__<sup>*</sup> file in this repo:
 - Make a safe copy of your existing _~/.bashrc_ file
-- Clone this repo
-- Open your existing _~/.bashrc_ file in an editor and add this line at the end: ```source ~/bashrc_etc/bashrc_my``` or ```source ~/bashrc_etc/bashrc_my --verbose```
-- The above line assumes that this repo was cloned in your home directory. Adjust the path in the above line if it was cloned eleswhere.
+```sh
+cp ~/.bashrc ~/.bashrc_backup_$(date +"%Y%d%m_%H%M%S")
+```
+- Clone this repo or download the raw _bashrc_ file from this repo
+- Open __~/.bashrc__ and add _one_ of the following two lines<sup>**</sup> at the end of __~/.bashrc__ file:
 
+```sh
+source ~/bashrc_etc/bashrc
+```
 
-## One way to use the _.vimrc_ configuration in this repo is to follow these steps:
+--OR--
+
+```sh
+source ~/bashrc_etc/bashrc --verbose
+```
+<sup>*</sup>Note that there is __<ins>no</ins> dot . prefix__ in this filename
+
+<sup>**</sup>Adjust the path in these lines to point to the directory where your **_bashrc_** actually is
+
+---
+
+### One proposed way to use vim configuration in the __vimrc__<sup>^</sup> file in this repo:
 - Make a safe copy of your existing _~/.vimrc_ file
-- Clone this repo
-- Goto your home directory using this command:
-```cd ~```
-- Make a symbolic link to point __~/.vimrc__ to this repository's __.vimrc__ using this command: ```ln -s ~/bashrc_etc/vimrc .vimrc ```
-- The above line assumes that this repo was cloned in your home directory. Adjust the path in the above line if it was cloned eleswhere.
+ e.g.
+ ```sh
+ mv ~/.vimrc ~/.vimrc_backup_$(date +"%Y%d%m_%H%M%S")
+ ```
+- Clone this repo or download the raw _.vimrc_ file from this repo
+- Make a symbolic link to point __~/.vimrc__ to this repository's __vimrc__<sup>^^</sup>:
+```sh
+ln -s ~/bashrc_etc/vimrc ~/.vimrc
+```
+<sup>^</sup>Note that there is __<ins>no</ins> dot . prefix__ in this filename
+
+<sup>^^</sup>Adjust the path in these lines to point to the directory where your *__vimrc__* actually is
+---
+
+
