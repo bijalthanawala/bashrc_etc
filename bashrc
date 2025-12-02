@@ -25,6 +25,10 @@ function mkdircd() {
     # Also saves the current directory before changing
     # to the new directory so that the original can be
     # returned to with a 'popd' command
+
+    local verbose=false
+    local new_dir=""
+
     if [ "$1" == "-v" -o "$1" == "--verbose" ]; then
         verbose=true
         new_dir="$2"
@@ -39,7 +43,6 @@ function mkdircd() {
     fi
 
     # Perform non-verbose
-    echo "1=[$1]" "verbose=[$verbose]"
     if [ ${verbose} == false ] ; then
         mkdir -p "${new_dir}" > /dev/null && pushd . > /dev/null && cd "${new_dir}"
         return
